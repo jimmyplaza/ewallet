@@ -1,0 +1,2 @@
+# ewallet
+Ethereum Hot Wallet
