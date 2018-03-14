@@ -15,18 +15,18 @@
 ## Usage
 
 ``` 
-1：Run geth at rpc mode 
+1：Run Geth at RPC mode 
 
-	 geth --rpc --rpcapi "eth,admin,personal,miner"
+	   geth --rpc --rpcapi "eth,admin,personal,miner"
   
-2：Run Go Binary
+2：Run Go Binary 
 
-   cd ewallet/api
-   go build (will generate a binary called "api", or just use the exist binary "api")
-   ./api
+	   cd ewallet/api
+	   go build (will generate a binary called "api", or just use the exist binary "api")
+	   ./api    ( Starting HTTP service on port 3000 ...)
 
 3： API document can be found at:
 
-    http://localhost:3000/apidoc
+    	  http://localhost:3000/apidoc
 	
 ```
