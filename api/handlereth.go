@@ -69,3 +69,39 @@ func transationInfo(w http.ResponseWriter, r *http.Request) {
 	Render.JSON(w, http.StatusOK, transFormat(t))
 	return
 }
+
+// startMiner
+func startMiner(w http.ResponseWriter, r *http.Request) {
+	result := New()
+
+	ret, err := ethClient.Call("miner_start")
+
+	if err != nil {
+		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
+	}
+
+	Render.JSON(w, http.StatusOK, ret)
+	return
+}
+
+// stopMiner
+func stopMiner(w http.ResponseWriter, r *http.Request) {
+	result := New()
+
+	ret, err := ethClient.Call("miner_stop")
+
+	if err != nil {
+		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
+	}
+
+	Render.JSON(w, http.StatusOK, ret)
+	return
+}

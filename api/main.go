@@ -94,6 +94,8 @@ func Main(context *app.Context) *bone.Mux {
 	mux.Get("/node", common.ThenFunc(nodeInfo))
 	mux.Get("/block/:block_number", common.ThenFunc(blockInfo))
 	mux.Get("/transation/:transation_hash", common.ThenFunc(transationInfo))
+	mux.Put("/startminer", common.ThenFunc(startMiner))
+	mux.Delete("/stopminer", common.ThenFunc(stopMiner))
 
 	// static
 	mux.Get("/apidoc", http.HandlerFunc(DocHandler))
