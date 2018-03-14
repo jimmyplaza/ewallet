@@ -16,11 +16,13 @@ func nodeInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
 	}
 
-	result.State = 1
-	result.Content["info"] = nodeFormat(node)
-	Render.JSON(w, http.StatusOK, result)
+	Render.JSON(w, http.StatusOK, nodeFormat(node))
 	return
 }
 
@@ -33,17 +35,19 @@ func blockInfo(w http.ResponseWriter, r *http.Request) {
 	block, err := ethClient.EthGetBlockByNumber(bn, false)
 	if block == nil {
 		result.State = 0
-		result.Content["error"] = "no struct "
+		result.Content["error"] = "No block struct found"
 		Render.JSON(w, http.StatusOK, result)
 		return
 	}
 	if err != nil {
 		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
 	}
 
-	result.State = 1
-	result.Content["block"] = blockFormat(block)
-	Render.JSON(w, http.StatusOK, result)
+	Render.JSON(w, http.StatusOK, blockFormat(block))
 	return
 }
 
@@ -56,10 +60,12 @@ func transationInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
 	}
 
-	result.State = 1
-	result.Content["transation"] = transFormat(t)
-	Render.JSON(w, http.StatusOK, result)
+	Render.JSON(w, http.StatusOK, transFormat(t))
 	return
 }
