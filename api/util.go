@@ -43,3 +43,33 @@ func blockFormat(block *ethrpc.Block) interface{} {
 	}
 	return b
 }
+
+func transFormat(trans *ethrpc.Transaction) interface{} {
+	type transAlias struct {
+		Hash             string  `json:"hash"`
+		Nonce            int     `json:"nonce"`
+		BlockHash        string  `json:"blockHash"`
+		BlockNumber      *int    `json:"blockNumber"`
+		TransactionIndex *int    `json:"-"`
+		From             string  `json:"from"`
+		To               string  `json:"to"`
+		Value            big.Int `json:"-"`
+		Gas              int     `json:"gas"`
+		GasPrice         big.Int `json:"-"`
+		Input            string  `json:"-"`
+
+		GasPrice_ int64 `json:"gasPrice"`
+		Value_    int64 `json:"value"`
+	}
+
+	byteTrans, err := json.Marshal(trans)
+	if err != nil {
+		log.Println(err)
+	}
+	var t transAlias
+	err = json.Unmarshal(byteTrans, &t)
+	if err != nil {
+		log.Println(err)
+	}
+	return t
+}
