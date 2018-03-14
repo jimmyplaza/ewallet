@@ -8,6 +8,24 @@ import (
 	"github.com/onrik/ethrpc"
 )
 
+func nodeFormat(node json.RawMessage) interface{} {
+	type nodeAlias struct {
+		Enode string `json:"enode"`
+		Name  string `json:"name"`
+	}
+
+	byteNode, err := json.Marshal(node)
+	if err != nil {
+		log.Println(err)
+	}
+	var n nodeAlias
+	err = json.Unmarshal(byteNode, &n)
+	if err != nil {
+		log.Println(err)
+	}
+	return n
+}
+
 func blockFormat(block *ethrpc.Block) interface{} {
 	type blockAlias struct {
 		Number           int                  `json:"-"`
