@@ -14,8 +14,8 @@ import (
 
 var (
 	Version     = "1.0"
-	PackageName = "api"
-	LastUpdated = "2018/03/13"
+	PackageName = "Ethereum API"
+	LastUpdated = "2018/03/14"
 	Authors     = "Jimmy Ko"
 
 	// share in application
