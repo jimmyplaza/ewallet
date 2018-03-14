@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ .PKG_NAME }}">
+    <meta name="author" content="">
+    <title>{{ .PKG_NAME }}</title>
+
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//ajax.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico"/>
+    <link href='//fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+      body {
+        font-family: 'PT Mono', serif;
+      }
+    </style>
+  </head>
+  <body>
+<a name="top"></a>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+		  <a class="navbar-brand" href="/farfarawaydoc">{{ .PKG_NAME }}</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+	  <h3> {{.PKG_NAME}} </h3>
+	  版本 {{.VERSION }}，更新於 {{ .LAST_UPDATE }}
+      </div>
+    </div>
+
+    <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+
+	<div class="col-md-12">
+	{{.CONTENT}}
+	</div>
+
+	<div class="col-md-12">
+	</div>
+	<div class="col-md-12">
+	</div>
+
+    </div> <!-- /row -->
+
+    <hr>
+
+    <a id="top" href="#top" class="scrollto">TOP</a>
+      <footer>
+	  <p>2018&copy; {{ .AUTHOR }} </p>
+      </footer>
+    </div> <!-- /container -->
+<style>
+  #top {
+    line-height: 0;
+    -webkit-border-radius: 2px;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    padding: 8px;
+    text-decoration: none;
+    color: white ;
+    background-color: black;
+    opacity: 0;
+    -webkit-transition: opacity 300ms;
+  }
+
+</style>
+<script type="text/javascript" charset="utf-8">
+
+$(function(){
+// poor man scroller
+var doc = $("html,body");
+var win = $(window);
+
+$('.scrollto').on('click', function(event){
+  event.preventDefault();
+  var scrollId = "a[name=" + $(this).attr('href').replace('#','') + "]";
+  doc.animate({scrollTop: $(scrollId).offset().top - 50 }); // minus 60 for -3.25em offset
+});
+
+var added;
+win.scroll(function(){
+   if (win.scrollTop() > 5) {
+      if (added) return;
+      added = true;
+      $('#top').css({opacity:1});
+    } else {
+      $('#top').css({opacity:0});
+      added = false;
+    }
+})
+
+$('#top').click(function(e){
+  $('body').animate({ scrollTop: 0 }, 'fast');
+  e.preventDefault();
+});
+
+
+})
+</script>
+
+  </body>
+</html>
