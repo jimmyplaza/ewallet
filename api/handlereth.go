@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
@@ -103,5 +104,39 @@ func stopMiner(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Render.JSON(w, http.StatusOK, ret)
+	return
+}
+
+// sendTrans
+func sendTrans(w http.ResponseWriter, r *http.Request) {
+	result := New()
+	type transhash struct {
+		Transation string `json:"transation"`
+	}
+
+	var trans transhash
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&trans); err != nil {
+		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err.Error()
+		Render.JSON(w, http.StatusOK, result)
+		return
+	}
+
+	log.Println(trans)
+
+	// t, err := ethClient.EthSendRawTransaction(trans.Transation)
+	t, err := ethClient.Call("eth_sendRawTransaction", "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675")
+
+	if err != nil {
+		log.Println(err)
+		result.State = 0
+		result.Content["error"] = err
+		Render.JSON(w, http.StatusOK, result)
+		return
+	}
+
+	Render.JSON(w, http.StatusOK, t)
 	return
 }
