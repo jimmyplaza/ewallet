@@ -124,10 +124,7 @@ func sendTrans(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(trans)
-
-	// t, err := ethClient.EthSendRawTransaction(trans.Transation)
-	t, err := ethClient.Call("eth_sendRawTransaction", "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675")
+	t, err := ethClient.EthSendRawTransaction(trans.Transation)
 
 	if err != nil {
 		log.Println(err)
