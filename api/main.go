@@ -4,9 +4,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"ewallet/api/app"
 
+	"github.com/didip/tollbooth"
 	"github.com/go-zoo/bone"
 	"github.com/justinas/alice"
 	"github.com/onrik/ethrpc"
@@ -30,7 +32,7 @@ type Result struct {
 }
 
 func New() *Result {
-	r := Result{0, map[string]interface{}{"success": "", "error": ""}}
+	r := Result{0, map[string]interface{}{"error": ""}}
 	return &r
 }
 
@@ -75,16 +77,11 @@ func Main(context *app.Context) *bone.Mux {
 		cors.New(cors.Options{AllowedHeaders: []string{"*"}, AllowCredentials: true}).Handler,
 	)
 
-	// commonLimit := common.Append(
-	// one minute no more than 100 from same ip address
-	// httpware.Limiter(tollbooth.NewLimiter(30, time.Minute)),
-	// )
-
-	//in production mode
+	// in production mode
 	if !context.Debug {
 		common = common.Append(
-		// one minute no more than 200 from same ip address
-		// httpware.Limiter(tollbooth.NewLimiter(200, time.Minute)),
+			// one minute no more than 10 from same ip address
+			httpware.Limiter(tollbooth.NewLimiter(10, time.Minute, nil)),
 		)
 	}
 
