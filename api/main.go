@@ -4,12 +4,12 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"time"
 
 	"ewallet/api/app"
 
 	"github.com/go-zoo/bone"
 	"github.com/justinas/alice"
+	"github.com/onrik/ethrpc"
 	"github.com/rs/cors"
 	"github.com/russross/blackfriday"
 	httpware "github.com/terryh/go-httpware"
@@ -20,9 +20,8 @@ import (
 var (
 	AppContext     *app.Context
 	Render         *render.Render
-	Curl           = &http.Client{Timeout: time.Duration(time.Second * 10)}
 	templateForDoc *template.Template
-	Bucket         string
+	ethClient      *ethrpc.EthRPC
 )
 
 type Result struct {
@@ -48,7 +47,6 @@ func DocHandler(w http.ResponseWriter, r *http.Request) {
 		CONTENT     template.HTML
 	}{app.Authors, app.PackageName, app.Version, app.LastUpdated, template.HTML(content)}
 
-	//templateForDoc.Execute(w, doc)
 	w.Header().Set("Content-type", "text/html;charset=utf-8")
 	templateForDoc.Execute(w, doc)
 }
@@ -97,6 +95,8 @@ func Main(context *app.Context) *bone.Mux {
 
 	// handlereth.go
 	mux.Get("/node", common.ThenFunc(nodeInfo))
+	mux.Get("/block/:block_number", common.ThenFunc(blockInfo))
+	mux.Get("/transation/:transation_hash", common.ThenFunc(transationInfo))
 
 	// static
 	mux.Get("/apidoc", http.HandlerFunc(DocHandler))
@@ -105,10 +105,14 @@ func Main(context *app.Context) *bone.Mux {
 
 func main() {
 
-	// start app service
+	// Start app service
 	AppContext = app.NewContext()
 
 	mux := Main(AppContext)
+
+	apiUrl := "http://127.0.0.1:8545"
+
+	ethClient = ethrpc.New(apiUrl)
 
 	log.Printf("Starting HTTP service on %s ...", AppContext.Port)
 	http.ListenAndServe(AppContext.Port, mux)
