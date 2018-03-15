@@ -28,5 +28,7 @@
 3： API document can be found at:
 
     	  http://localhost:3000/apidoc
-	
+4:  Rate limit for each API call.:
+
+          One minute no more than 10 from same ip address.
 ```
